@@ -374,5 +374,13 @@ void measure_offsets() {
 }
 
 // . . .
-// Make your own autonomous functions here!
+void autonForwardTest() {
+  chassis.pid_odom_set(24, DRIVE_SPEED, true);
+}
+
+void autonTurnTest() {
+  chassis.pid_turn_set(90, TURN_SPEED);
+  pros::delay(1000);
+  chassis.pid_turn_set(-90, TURN_SPEED);
+}
 // . . .
