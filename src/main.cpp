@@ -225,6 +225,7 @@ enum intakeState {
   INTAKE_TO_MID,
   HOPPER_TO_TOP,
   HOPPER_TO_MID,
+  INTAKE_HOLD,
 };
 
 intakeState state;
@@ -293,20 +294,39 @@ void hopperToMid() {
   }
 }
 
+void intakeHold() {
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(127);
+      intakeMid.move(127);
+      intakeTop.move(0);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(0);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
 
 void runIntake() {
   if (state == intakeState::INTAKE_TO_TOP) {
     intakeToTop();
-    ez::screen_print("intaketop", 0);
+      ez::screen_print("intaketop", 0);
   } else if (state == intakeState::INTAKE_TO_MID) {
-    intakeToMid();
-    ez::screen_print("intakemid", 0);
+      intakeToMid();
+      ez::screen_print("intakemid", 0);
   } else if (state == intakeState::HOPPER_TO_TOP) {
-    hopperToTop();
-    ez::screen_print("hoppertop", 0);
+      hopperToTop();
+      ez::screen_print("hoppertop", 0);
   } else if (state == intakeState::HOPPER_TO_MID) {
-    hopperToMid();
-    ez::screen_print("hoppermid", 0);
+      hopperToMid();
+      ez::screen_print("hoppermid", 0);
+  } else if (state == intakeState::INTAKE_HOLD) {
+      intakeHold();
+      ez::screen_print("intakeHold", 0);
   }
 }
 /**
@@ -331,6 +351,7 @@ void opcontrol() {
   
 
   while (true) {
+    colorSortUserSelect("blue");
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
@@ -338,9 +359,8 @@ void opcontrol() {
 
     hopperExit.button_toggle(master.get_digital(DIGITAL_X));
     hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
-    descore.button_toggle(master.get_digital(DIGITAL_B));
     loader.button_toggle(master.get_digital(DIGITAL_Y));
-    wing.button_toggle(master.get_digital(DIGITAL_L1));
+    descore.button_toggle(master.get_digital(DIGITAL_L1));
 
     if(master.get_digital(DIGITAL_UP)) {
       state = INTAKE_TO_TOP;
@@ -350,6 +370,8 @@ void opcontrol() {
         state = HOPPER_TO_MID;
     } else if(master.get_digital(DIGITAL_LEFT)) {
         state = HOPPER_TO_TOP;
+    } else if (master.get_digital(DIGITAL_L2)) {
+      state = INTAKE_HOLD;
     }
 
     

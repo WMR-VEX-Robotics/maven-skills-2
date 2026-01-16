@@ -19,3 +19,15 @@ void measure_offsets();
 
 void autonForwardTest();
 void autonTurnTest();
+
+void colorSortBlue();
+
+void colorSortRed();
+
+void colorSortUserSelect(std::string ringColor);
+
+void colorSortOff();
+
+void updateSolenoid();
+
+void colorSortTask();

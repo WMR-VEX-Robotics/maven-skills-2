@@ -384,3 +384,88 @@ void autonTurnTest() {
   chassis.pid_turn_set(-90, TURN_SPEED);
 }
 // . . .
+
+//color sort code
+
+
+void colorSortBlue() {
+    int read = colorSensor.get_hue();
+    std::string result = "";
+    if (read <= 15) { // Red detected
+        hopperEnterance.set(true);
+    } else if (read >= 70) { // Blue detected
+        hopperEnterance.set(false);
+    } else {
+        result = "other";
+    }
+}
+
+void colorSortRed() {
+    int read = colorSensor.get_hue();
+    std::string result = "";
+    if (read >= 180) { // Blue detected
+        hopperEnterance.set(true);
+    } 
+    else if (read <= 14) { // Red detected
+        hopperEnterance.set(false);
+    }
+    else {
+        result = "other";
+    }
+}
+
+void colorSortOff() {
+    hopperEnterance.set(false);
+}
+
+void colorSortUserSelect(std::string ringColor) {
+    if (ringColor.starts_with('b')) {
+        colorSortBlue();
+        
+    } else if (ringColor.starts_with('r')) {
+        colorSortRed(); 
+    }
+    else {
+        colorSortOff();
+    }
+}
+
+void colorSortTask() {
+    //use if BlueAlliance
+    while (true) {
+        int hue = colorSensor.get_hue();
+        
+        if (hue <= 14) {  // Red
+            hopperEnterance.set(true);
+            pros::delay(1000);  // Wait 1 second
+            hopperEnterance.set(false);
+        } 
+        else if (hue >= 90) {  // Blue
+            hopperEnterance.set(false);
+        } 
+        else {  // Other
+            hopperEnterance.set(false);
+        }
+
+        pros::delay(20);  // Prevent CPU overuse
+    }
+
+   //use if RedAlliance
+   /*while (true) {
+        int hue = colorSensor.get_hue();
+        
+        if (hue <= 18) {  // Red
+            hopperEnterance.set(false);
+        } 
+        else if (hue >= 180) {  // Blue
+            hopperEnterance.set(true);
+            pros::delay(1000);
+            hopperEnterance.set(false);
+        } 
+        else {  // Other
+            hopperEnterance.set(false);
+        }
+
+        pros::delay(20);  // Prevent CPU overuse
+    }*/
+}

@@ -19,7 +19,10 @@ inline ez::Piston hopperExit('B');
 inline ez::Piston hopperEnterance('C');
 inline ez::Piston descore('D');
 inline ez::Piston loader('E');
-inline ez::Piston wing('F');
+
+pros::Optical colorSensor(6);
+
+
 
 
 
