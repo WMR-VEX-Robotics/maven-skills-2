@@ -11,8 +11,8 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-12, -13, -16},     // Left Chassis Ports (negative port will reverse it!)
-    {18, 19, 20},  // Right Chassis Ports (negative port will reverse it!)
+    {-3, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
+    {18, 19, 17},  // Right Chassis Ports (negative port will reverse it!)
 
     5,      // IMU Port
     3.125,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
@@ -23,8 +23,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(-14, 2, -6.8);  // This tracking wheel is perpendicular to the drive wheels
-ez::tracking_wheel vert_tracker(-16, 2, -0.25);   // This tracking wheel is parallel to the drive wheels
+ez::tracking_wheel horiz_tracker(-12, 2, -6.8);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel vert_tracker(-13, 2, -0.25);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -124,7 +124,8 @@ void autonomous() {
   to be consistent
   */
 
-  ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  autonForwardTest();
 }
 
 /**
@@ -196,15 +197,15 @@ void ez_template_extras() {
     //  When enabled:
     //  * use A and Y to increment / decrement the constants
     //  * use the arrow keys to navigate the constants
-    if (master.get_digital_new_press(DIGITAL_UP))
-      chassis.pid_tuner_toggle();
+    /*if (master.get_digital_new_press(DIGITAL_UP))
+      chassis.pid_tuner_toggle();*/
 
     // Trigger the selected autonomous routine
-    if (master.get_digital(DIGITAL_UP) && master.get_digital(DIGITAL_DOWN)) {
+    /*if (master.get_digital(DIGITAL_UP) && master.get_digital(DIGITAL_DOWN)) {
       pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
       autonomous();
       chassis.drive_brake_set(preference);
-    }
+    }*/
 
     // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
@@ -217,6 +218,97 @@ void ez_template_extras() {
   }
 }
 
+
+//global state variable
+enum intakeState {
+  INTAKE_TO_TOP = 0,
+  INTAKE_TO_MID,
+  HOPPER_TO_TOP,
+  HOPPER_TO_MID,
+};
+
+intakeState state;
+
+void intakeToTop() {
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(127);
+      intakeMid.move(127);
+      intakeTop.move(127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+void intakeToMid() {
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(127);
+      intakeMid.move(127);
+      intakeTop.move(-127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+void hopperToTop() {
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(-127);
+      intakeMid.move(127);
+      intakeTop.move(127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+void hopperToMid() {
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(-127);
+      intakeMid.move(127);
+      intakeTop.move(-127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+
+void runIntake() {
+  if (state == intakeState::INTAKE_TO_TOP) {
+    intakeToTop();
+    ez::screen_print("intaketop", 0);
+  } else if (state == intakeState::INTAKE_TO_MID) {
+    intakeToMid();
+    ez::screen_print("intakemid", 0);
+  } else if (state == intakeState::HOPPER_TO_TOP) {
+    hopperToTop();
+    ez::screen_print("hoppertop", 0);
+  } else if (state == intakeState::HOPPER_TO_MID) {
+    hopperToMid();
+    ez::screen_print("hoppermid", 0);
+  }
+}
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -230,9 +322,13 @@ void ez_template_extras() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+
+  
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
@@ -244,17 +340,26 @@ void opcontrol() {
     hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
     descore.button_toggle(master.get_digital(DIGITAL_B));
     loader.button_toggle(master.get_digital(DIGITAL_Y));
-    
+    wing.button_toggle(master.get_digital(DIGITAL_L1));
 
-    // . . .
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-      intakeWhole.move(127);
-    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      intakeWhole.move(-127);
-    } else {
-      intakeWhole.move(0);
+    if(master.get_digital(DIGITAL_UP)) {
+      state = INTAKE_TO_TOP;
+    } else if(master.get_digital(DIGITAL_RIGHT)) {
+        state = INTAKE_TO_MID;
+    } else if(master.get_digital(DIGITAL_DOWN)) {
+        state = HOPPER_TO_MID;
+    } else if(master.get_digital(DIGITAL_LEFT)) {
+        state = HOPPER_TO_TOP;
     }
+
+    
+    
+    //intakeTopControl
+    
     // . . .
+    runIntake();
+    // . . .
+    
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
