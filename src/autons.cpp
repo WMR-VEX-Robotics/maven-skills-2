@@ -391,7 +391,7 @@ void autonTurnTest() {
 void colorSortBlue() {
     int read = colorSensor.get_hue();
     std::string result = "";
-    if (read <= 15) { // Red detected
+    if (read <= 20) { // Red detected
         hopperEnterance.set(true);
     } else if (read >= 70) { // Blue detected
         hopperEnterance.set(false);
@@ -403,10 +403,10 @@ void colorSortBlue() {
 void colorSortRed() {
     int read = colorSensor.get_hue();
     std::string result = "";
-    if (read >= 180) { // Blue detected
+    if (read >= 150) { // Blue detected
         hopperEnterance.set(true);
     } 
-    else if (read <= 14) { // Red detected
+    else if (read <= 24) { // Red detected
         hopperEnterance.set(false);
     }
     else {
@@ -435,7 +435,7 @@ void colorSortTask() {
     while (true) {
         int hue = colorSensor.get_hue();
         
-        if (hue <= 14) {  // Red
+        if (hue <= 20) {  // Red
             hopperEnterance.set(true);
             pros::delay(1000);  // Wait 1 second
             hopperEnterance.set(false);
@@ -454,10 +454,10 @@ void colorSortTask() {
    /*while (true) {
         int hue = colorSensor.get_hue();
         
-        if (hue <= 18) {  // Red
+        if (hue <= 20) {  // Red
             hopperEnterance.set(false);
         } 
-        else if (hue >= 180) {  // Blue
+        else if (hue >= 130) {  // Blue
             hopperEnterance.set(true);
             pros::delay(1000);
             hopperEnterance.set(false);
