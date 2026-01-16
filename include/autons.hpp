@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 void default_constants();
 
 void drive_example();
