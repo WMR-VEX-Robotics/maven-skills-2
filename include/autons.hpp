@@ -27,7 +27,7 @@ void colorSortRed();
 
 void colorSortUserSelect(std::string ringColor);
 
-void colorSortOff();
+void colorSortNah();
 
 void updateSolenoid();
 

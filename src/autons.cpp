@@ -391,10 +391,13 @@ void autonTurnTest() {
 void colorSortBlue() {
     int read = colorSensor.get_hue();
     std::string result = "";
-    if (read <= 20) { // Red detected
-        hopperEnterance.set(true);
-    } else if (read >= 70) { // Blue detected
+    if (read <= 32) { // Red detected
         hopperEnterance.set(false);
+        intakeTop.move(-127);
+        pros::delay(500);
+        intakeTop.move(0);
+    } else if (read >= 65) { // Blue detected
+        hopperEnterance.set(true);
     } else {
         result = "other";
     }
@@ -403,20 +406,24 @@ void colorSortBlue() {
 void colorSortRed() {
     int read = colorSensor.get_hue();
     std::string result = "";
-    if (read >= 150) { // Blue detected
-        hopperEnterance.set(true);
-    } 
-    else if (read <= 24) { // Red detected
+    if (read >= 65) { // Blue detected
         hopperEnterance.set(false);
+        intakeTop.move(-127);
+        pros::delay(500);
+        intakeTop.move(0);
+    } 
+    else if (read <= 32) { // Red detected
+        hopperEnterance.set(true);
     }
     else {
         result = "other";
     }
 }
 
-void colorSortOff() {
-    hopperEnterance.set(false);
+void colorSortNah() {
+  hopperEnterance.set(false);
 }
+
 
 void colorSortUserSelect(std::string ringColor) {
     if (ringColor.starts_with('b')) {
@@ -424,9 +431,8 @@ void colorSortUserSelect(std::string ringColor) {
         
     } else if (ringColor.starts_with('r')) {
         colorSortRed(); 
-    }
-    else {
-        colorSortOff();
+    } else if (ringColor.starts_with('o')) {
+        colorSortNah();
     }
 }
 
@@ -435,12 +441,10 @@ void colorSortTask() {
     while (true) {
         int hue = colorSensor.get_hue();
         
-        if (hue <= 20) {  // Red
+        if (hue <= 32) {  // Red
             hopperEnterance.set(true);
-            pros::delay(1000);  // Wait 1 second
-            hopperEnterance.set(false);
         } 
-        else if (hue >= 90) {  // Blue
+        else if (hue >= 65) {  // Blue
             hopperEnterance.set(false);
         } 
         else {  // Other
@@ -454,13 +458,11 @@ void colorSortTask() {
    /*while (true) {
         int hue = colorSensor.get_hue();
         
-        if (hue <= 20) {  // Red
+        if (hue <= 32) {  // Red
             hopperEnterance.set(false);
         } 
-        else if (hue >= 130) {  // Blue
+        else if (hue >= 65) {  // Blue
             hopperEnterance.set(true);
-            pros::delay(1000);
-            hopperEnterance.set(false);
         } 
         else {  // Other
             hopperEnterance.set(false);

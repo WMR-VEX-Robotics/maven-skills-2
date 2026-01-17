@@ -11,7 +11,7 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-3, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
+    {-7, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
     {18, 19, 17},  // Right Chassis Ports (negative port will reverse it!)
 
     5,      // IMU Port
@@ -230,7 +230,17 @@ enum intakeState {
 
 intakeState state;
 
+enum colorSortState {
+  colorSortOff = 0,
+  colorSortOn,
+};
+
+colorSortState colorState;
+
+
+
 void intakeToTop() {
+  hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
@@ -247,6 +257,7 @@ void intakeToTop() {
 }
 
 void intakeToMid() {
+  hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
@@ -263,6 +274,7 @@ void intakeToMid() {
 }
 
 void hopperToTop() {
+  hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-127);
       intakeMid.move(127);
@@ -279,6 +291,7 @@ void hopperToTop() {
 }
 
 void hopperToMid() {
+  hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-127);
       intakeMid.move(127);
@@ -295,14 +308,15 @@ void hopperToMid() {
 }
 
 void intakeHold() {
+  hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
-      intakeTop.move(0);
+      intakeTop.move(7.5);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
-      intakeTop.move(0);
+      intakeTop.move(7.5);
     } else {
       intakeBottom.move(0);
       intakeMid.move(0);
@@ -329,6 +343,14 @@ void runIntake() {
       ez::screen_print("intakeHold", 0);
   }
 }
+
+void runColorSort() {
+  if (colorState == colorSortState::colorSortOff) {
+    colorSortUserSelect("off");
+  } else if (colorState ==colorSortState::colorSortOn) {
+    colorSortUserSelect("red");
+  }
+}
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -351,7 +373,6 @@ void opcontrol() {
   
 
   while (true) {
-    colorSortUserSelect("blue");
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
@@ -359,8 +380,9 @@ void opcontrol() {
 
     hopperExit.button_toggle(master.get_digital(DIGITAL_X));
     hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
-    loader.button_toggle(master.get_digital(DIGITAL_Y));
+    loader.button_toggle(master.get_digital(DIGITAL_B));
     descore.button_toggle(master.get_digital(DIGITAL_L1));
+    
 
     if(master.get_digital(DIGITAL_UP)) {
       state = INTAKE_TO_TOP;
@@ -374,12 +396,21 @@ void opcontrol() {
       state = INTAKE_HOLD;
     }
 
+    if(master.get_digital_new_press(DIGITAL_Y)) {
+      if(colorState == colorSortState::colorSortOff) {
+        colorState = colorSortState::colorSortOn;
+      } else {
+        colorState = colorSortState::colorSortOff;
+      }
+    }
+
     
     
     //intakeTopControl
     
     // . . .
     runIntake();
+    runColorSort();
     // . . .
     
 

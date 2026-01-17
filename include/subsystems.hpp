@@ -17,8 +17,8 @@ inline pros::Motor intakeTop(1);
 
 inline ez::Piston hopperExit('B');
 inline ez::Piston hopperEnterance('C');
-inline ez::Piston descore('D');
-inline ez::Piston loader('E');
+inline ez::Piston loader('D');
+inline ez::Piston descore('E');
 
 inline pros::Optical colorSensor(6);
 
