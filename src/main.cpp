@@ -240,6 +240,7 @@ colorSortState colorState;
 
 
 void intakeToTop() {
+  colorState = colorSortState::colorSortOff;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
@@ -257,6 +258,7 @@ void intakeToTop() {
 }
 
 void intakeToMid() {
+  colorState = colorSortState::colorSortOff;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
@@ -274,6 +276,7 @@ void intakeToMid() {
 }
 
 void hopperToTop() {
+  colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-127);
@@ -291,6 +294,7 @@ void hopperToTop() {
 }
 
 void hopperToMid() {
+  colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-127);
@@ -308,15 +312,16 @@ void hopperToMid() {
 }
 
 void intakeHold() {
+  colorState = colorSortState::colorSortOn;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
-      intakeTop.move(7.5);
+      intakeTop.move(8);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
-      intakeTop.move(7.5);
+      intakeTop.move(8);
     } else {
       intakeBottom.move(0);
       intakeMid.move(0);
@@ -327,7 +332,7 @@ void intakeHold() {
 
 void runIntake() {
   if (state == intakeState::INTAKE_TO_TOP) {
-    intakeToTop();
+      intakeToTop();
       ez::screen_print("intaketop", 0);
   } else if (state == intakeState::INTAKE_TO_MID) {
       intakeToMid();
@@ -347,8 +352,10 @@ void runIntake() {
 void runColorSort() {
   if (colorState == colorSortState::colorSortOff) {
     colorSortUserSelect("off");
+    ez::screen_print("colorSortOff", 1);
   } else if (colorState ==colorSortState::colorSortOn) {
     colorSortUserSelect("red");
+    ez::screen_print("colorSortEnabled", 1);
   }
 }
 /**

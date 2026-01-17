@@ -19,6 +19,7 @@ void odom_boomerang_injected_pure_pursuit_example();
 void measure_offsets();
 
 void autonForwardTest();
+
 void autonTurnTest();
 
 void colorSortBlue();
@@ -32,3 +33,11 @@ void colorSortNah();
 void updateSolenoid();
 
 void colorSortTask();
+
+void redLeft();
+
+void blueLeft();
+
+void redRight();
+
+void blueRight();

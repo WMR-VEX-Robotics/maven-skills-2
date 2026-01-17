@@ -1,4 +1,6 @@
+#include "autons.hpp"
 #include "main.h"
+#include "subsystems.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -382,6 +384,134 @@ void autonTurnTest() {
   chassis.pid_turn_set(90, TURN_SPEED);
   pros::delay(1000);
   chassis.pid_turn_set(-90, TURN_SPEED);
+}
+
+void redLeft() {
+  hopperEnterance.set(false);
+  intakeBottom.move(127);
+  intakeMid.move(80);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{-8.5, 22.5, -45}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_turn_set(-135_deg, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-1, 31, -135}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeTop.move(-80);
+  pros::delay(1700);
+  chassis.pid_odom_set({{-32, -5, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeMid.move(127);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{-32, -14, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(1200);
+  chassis.pid_odom_set({{-32, 10, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(350);
+  intakeTop.move(127);
+  pros::delay(750);
+  intakeWhole.move(0);
+  descore.set(true);
+  chassis.pid_odom_set({{-20, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{-20, 33, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+}
+
+void blueLeft() {
+  hopperEnterance.set(false);
+  intakeBottom.move(127);
+  intakeMid.move(80);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{-8.5, 22.5, -45}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_turn_set(-135_deg, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-1, 31, -135}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeTop.move(-80);
+  pros::delay(1700);
+  chassis.pid_odom_set({{-32, -5, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeMid.move(127);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{-32, -14, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(1200);
+  chassis.pid_odom_set({{-32, 10, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(350);
+  intakeTop.move(127);
+  pros::delay(750);
+  intakeWhole.move(0);
+  descore.set(true);
+  chassis.pid_odom_set({{-20, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{-20, 33, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+}
+
+void redRight() {
+  hopperEnterance.set(true);
+  intakeBottom.move(127);
+  intakeMid.move(80);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{8, 22.5, 45}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_turn_set(135_deg, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{32, -5, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeMid.move(127);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{32, -14, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(1200);
+  chassis.pid_odom_set({{32, 10, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(350);
+  intakeTop.move(127);
+  pros::delay(1300);
+  intakeWhole.move(0);
+  descore.set(true);
+  chassis.pid_odom_set({{44, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{44, 33, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();                         
+}
+
+void blueRight() {
+  hopperEnterance.set(true);
+  intakeBottom.move(127);
+  intakeMid.move(80);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{8, 22.5, 45}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_turn_set(135_deg, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{32, -5, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  intakeMid.move(127);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{32, -14, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(1200);
+  chassis.pid_odom_set({{32, 10, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(350);
+  intakeTop.move(127);
+  pros::delay(1300);
+  intakeWhole.move(0);
+  descore.set(true);
+  chassis.pid_odom_set({{44, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{44, 33, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();                         
 }
 // . . .
 
