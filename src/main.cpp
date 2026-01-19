@@ -125,7 +125,11 @@ void autonomous() {
   */
 
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
-  autonForwardTest();
+  //autonForwardTest();
+  //redLeft();
+  //redRight();
+  blueLeft();
+  //blueRight();
 }
 
 /**
@@ -279,7 +283,7 @@ void hopperToTop() {
   colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      intakeBottom.move(-127);
+      intakeBottom.move(-75);
       intakeMid.move(127);
       intakeTop.move(127);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
@@ -297,7 +301,7 @@ void hopperToMid() {
   colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      intakeBottom.move(-127);
+      intakeBottom.move(-75);
       intakeMid.move(127);
       intakeTop.move(-127);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
@@ -354,7 +358,7 @@ void runColorSort() {
     colorSortUserSelect("off");
     ez::screen_print("colorSortOff", 1);
   } else if (colorState ==colorSortState::colorSortOn) {
-    colorSortUserSelect("red");
+    colorSortUserSelect("blue"); //CHANGE THIS COLOR WHEN NEEDED
     ez::screen_print("colorSortEnabled", 1);
   }
 }
