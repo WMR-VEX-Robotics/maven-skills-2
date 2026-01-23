@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "BlueLeft",
+    "project_name": "skills",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -424,9 +424,9 @@
       }
     },
     "upload_options": {
-      "description": "MavenBlueLeft",
+      "description": "skills",
       "icon": "pizza",
-      "slot": 3
+      "slot": 5
     },
     "use_early_access": false
   }

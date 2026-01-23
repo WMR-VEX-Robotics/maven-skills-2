@@ -491,33 +491,41 @@ void redRight() {
 }
 
 void blueRight() {
-  hopperEnterance.set(true);
   intakeBottom.move(127);
   intakeMid.move(80);
   intakeTop.move(8);
-  chassis.pid_odom_set({{8, 22.5, 45}, fwd, DRIVE_SPEED}, true);
-  chassis.pid_wait();
-  loader.set(true);
-  chassis.pid_turn_set(135_deg, TURN_SPEED);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{32, -5, 180}, fwd, DRIVE_SPEED}, true);
-  chassis.pid_wait();
-  intakeMid.move(127);
-  intakeTop.move(8);
-  chassis.pid_odom_set({{32, -14, 180}, fwd, DRIVE_SPEED}, true);
-  chassis.pid_wait();
-  pros::delay(1200);
-  chassis.pid_odom_set({{32, 10, 180}, rev, DRIVE_SPEED}, true);
-  chassis.pid_wait();
-  pros::delay(350);
-  intakeTop.move(127);
-  pros::delay(1300);
-  intakeWhole.move(0);
-  descore.set(true);
-  chassis.pid_odom_set({{44, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{8.5, 22.5, 45}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait_quick();
-  chassis.pid_odom_set({{44, 33, 180}, rev, DRIVE_SPEED}, true);
-  chassis.pid_wait();                         
+  chassis.pid_turn_set(-45, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-2, 30.25, -45}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  hopperEnterance.set(false);
+  hopperExit.set(false);
+  intakeTop.move(-127);
+  intakeBottom.move(-80);
+  intakeMid.move(-100);
+  pros::delay(2100);
+  /*hopperEnterance.set(false);
+  hopperExit.set(false);
+  intakeBottom.move(127);
+  intakeMid.move(80);
+  intakeTop.move(8);
+  chassis.pid_odom_set({{-20, 5, -135}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-33, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-33, -24, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-33, 10, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  pros::delay(600);
+  intakeWhole.move(127);
+  descore.set(true);
+  chassis.pid_odom_set({{-20, -7, 180}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{-20, 33, 180}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();*/                        
 }
 // . . .
 
@@ -606,4 +614,29 @@ void colorSortTask() {
 
         pros::delay(20);  // Prevent CPU overuse
     }*/
+}
+
+void skills() {
+  hopperEnterance.set(true);
+  hopperExit.set(false);
+  intakeBottom.move(127);
+  intakeMid.move(127);
+  intakeTop.move(7);
+  chassis.pid_odom_set({{-10.5, 31.5, -22}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-166, TURN_SPEED);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_odom_set({{-22.6, 0.95, -166}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_odom_set({{-29, -10, 180}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  pros::delay(2500);
+  hopperEnterance.set(false);
+  chassis.pid_odom_set({{-28, 14.5, 180}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  intakeTop.move(127);
+  pros::delay(500);
+  intakeTop.move(-127);
+  hopperExit.set(true);
 }

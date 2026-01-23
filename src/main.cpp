@@ -128,8 +128,9 @@ void autonomous() {
   //autonForwardTest();
   //redLeft();
   //redRight();
-  blueLeft();
+  //blueLeft();
   //blueRight();
+  skills();
 }
 
 /**

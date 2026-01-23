@@ -41,3 +41,5 @@ void blueLeft();
 void redRight();
 
 void blueRight();
+
+void skills();
