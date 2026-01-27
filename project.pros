@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "skills",
+    "project_name": "redright",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -424,9 +424,9 @@
       }
     },
     "upload_options": {
-      "description": "skills",
-      "icon": "pizza",
-      "slot": 5
+      "description": "redright",
+      "icon": "X",
+      "slot": 2
     },
     "use_early_access": false
   }
