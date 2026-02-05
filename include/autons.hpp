@@ -43,3 +43,5 @@ void redRight();
 void blueRight();
 
 void skills();
+
+void dont();
