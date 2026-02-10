@@ -653,30 +653,40 @@ void colorSortTask() {
         pros::delay(20);  // Prevent CPU overuse
     }*/
 }
+int n = 0;
+int delayTime;
+void pulsefunction(int delayTime){
+  while (n<5) {
+  intakeMid.move(127);
+  intakeTop.move(127);
+  pros::delay(delayTime);
+  intakeMid.move(50);
+  intakeTop.move(50);
+  pros::delay(delayTime);
+  n++;
+}
+}
 
 void skills() {
   intakeBottom.move(127);
   chassis.odom_xyt_set(0, 0, 0);
   chassis.pid_odom_set({{0, 31, 0}, fwd, DRIVE_SPEED}, true);
   loader.set(true);
-  intakeMid.move(75);
-  intakeTop.move(10);
+  intakeMid.move(70);
+  intakeTop.move(5);
   chassis.pid_wait();
   chassis.pid_turn_set(90, TURN_SPEED);
   chassis.pid_wait();
-  chassis.pid_odom_set({{14.5, 31, 90}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{15, 31.2, 90}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   pros::delay(2100);
   intakeMid.move(90);
-  chassis.pid_odom_set({{-11.5, 30.7, 90}, rev, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{-12, 30.5, 90}, rev, DRIVE_SPEED}, true);
   chassis.pid_wait();
   pros::delay(750);
-  intakeMid.move(127);
   intakeTop.move(127);
-  pros::delay(1550);
-  hopperExit.set(true);
-  intakeBottom.move(-127);
-  pros::delay(800);
+  pulsefunction(300);
+  //pros::delay(1550);
   chassis.pid_odom_set({{-7, 31, 90}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   loader.set(false);
@@ -697,8 +707,8 @@ void skills() {
   chassis.pid_odom_set({{-58, -3.8, -43}, rev, DRIVE_SPEED}, true);
   chassis.pid_wait();
   intakeTop.move(-127);
-  pros::delay(25);
-  intakeMid.move(127);
+  pros::delay(500);
+  intakeMid.move(60);
   pros::delay(2000);
   hopperExit.set(true);
   intakeBottom.move(-127);
