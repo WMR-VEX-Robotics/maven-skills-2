@@ -318,12 +318,12 @@ void hopperToMid() {
 }
 
 void intakeHold() {
-  colorState = colorSortState::colorSortOn;
+  colorState = colorSortState::colorSortOff;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
-      intakeMid.move(127);
-      intakeTop.move(127);
+      intakeMid.move(80);
+      intakeTop.move(10);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
