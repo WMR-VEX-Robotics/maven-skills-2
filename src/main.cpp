@@ -11,7 +11,7 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-7, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
+    {-7, -3, -11},     // Left Chassis Ports (negative port will reverse it!)
     {18, 19, 17},  // Right Chassis Ports (negative port will reverse it!)
 
     5,      // IMU Port
@@ -423,7 +423,7 @@ void opcontrol() {
     
     // . . .
     runIntake();
-    runColorSort();
+    //runColorSort();
     // . . .
     
 

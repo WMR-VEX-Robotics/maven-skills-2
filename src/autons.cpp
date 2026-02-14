@@ -652,7 +652,7 @@ void colorSortTask() {
 
         pros::delay(20);  // Prevent CPU overuse
     }*/
-}
+}                                                 
 int n = 0;
 int delayTime;
 void pulsefunction(int delayTime){
@@ -660,8 +660,8 @@ void pulsefunction(int delayTime){
   intakeMid.move(127);
   intakeTop.move(127);
   pros::delay(delayTime);
-  intakeMid.move(50);
-  intakeTop.move(50);
+  intakeMid.move(70);
+  intakeTop.move(70);
   pros::delay(delayTime);
   n++;
 }
@@ -669,47 +669,83 @@ void pulsefunction(int delayTime){
 
 void skills() {
   intakeBottom.move(127);
-  chassis.odom_xyt_set(0, 0, 0);
-  chassis.pid_odom_set({{0, 31, 0}, fwd, DRIVE_SPEED}, true);
+  chassis.odom_xyt_set(0, 0, 90);
+  chassis.pid_odom_set({{31, 0, 90}, fwd, DRIVE_SPEED}, true);
   loader.set(true);
   intakeMid.move(70);
-  intakeTop.move(5);
+  intakeTop.move(7);
   chassis.pid_wait();
-  chassis.pid_turn_set(90, TURN_SPEED);
+  chassis.pid_turn_set(180, TURN_SPEED);
   chassis.pid_wait();
-  chassis.pid_odom_set({{15, 31.2, 90}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{31.2, -15.5, 180}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   pros::delay(2100);
   intakeMid.move(90);
-  chassis.pid_odom_set({{-12, 30.5, 90}, rev, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{31, 20, 180}, rev, 100}, true); //move forward 1/2 inch when blue side
   chassis.pid_wait();
+  intakeWhole.move(127);
   pros::delay(750);
-  intakeTop.move(127);
-  pulsefunction(300);
-  //pros::delay(1550);
-  chassis.pid_odom_set({{-7, 31, 90}, fwd, DRIVE_SPEED}, true);
+  intakeWhole.move(127);
+  //pulsefunction(250);
+  pros::delay(1800);
+  chassis.odom_xyt_set(0, 0, 0);
+  intakeWhole.move(127);
+  chassis.pid_odom_set({{0, 8, 0}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   loader.set(false);
-  //long goal scoring done
+  chassis.pid_turn_set(124, TURN_SPEED);
+  chassis.pid_wait_quick();
   hopperEnterance.set(true);
   hopperExit.set(false);
-  intakeBottom.move(127);
-  intakeMid.move(127);
-  intakeTop.move(127);
-  chassis.pid_odom_set({{-25, 1.7, -140}, fwd, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{30, -13, 124.5}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
-  pros::delay(3000);
+  pros::delay(2500);
+  //chassis.pid_odom_set({{28, -10, 124.5}, rev, DRIVE_SPEED}, true);
+  //chassis.pid_wait_quick();
+  chassis.pid_turn_set(220, TURN_SPEED);
+  chassis.pid_wait_quick();
   hopperEnterance.set(false);
-  intakeMid.move(50);
-  intakeTop.move(-30);
-  chassis.pid_odom_set({{-80, 5.4, -90}, fwd, 70}, true);
+  intakeTop.move(5);
+  intakeMid.move(40);
+  chassis.pid_odom_set({{26, -63, 180}, fwd, 90}, true);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-58, -3.8, -43}, rev, DRIVE_SPEED}, true);
+  chassis.pid_odom_set({{34.7, -45.1, 226.5}, rev, 70}, true);
   chassis.pid_wait();
-  intakeTop.move(-127);
-  pros::delay(500);
+  intakeTop.move(-100);
   intakeMid.move(60);
-  pros::delay(2000);
-  hopperExit.set(true);
+  pros::delay(3000);
+  intakeMid.move(90);
+  intakeTop.move(-100);
   intakeBottom.move(-127);
+  hopperExit.set(true);
+  pros::delay(4000);
+  hopperExit.set(false);
+  intakeBottom.move(127);
+  chassis.pid_odom_set({{3.5, -78, 228}, fwd, 90}, true);
+  chassis.pid_wait();
+  loader.set(true);
+  chassis.pid_turn_set(180, TURN_SPEED);
+  chassis.pid_wait();
+  intakeMid.move(80);
+  intakeTop.move(10);
+  chassis.pid_odom_set({{2.7, -89, 180}, fwd, 90}, true);
+  chassis.pid_wait();
+  pros::delay(2100);
+  intakeMid.move(90);
+  chassis.pid_odom_set({{2.2, -57.75, 180}, rev, 90}, true);
+  chassis.pid_wait();
+  intakeWhole.move(127);
+  chassis.odom_xyt_set(0, 0, 0);
+  pros::delay(2500);
+  chassis.pid_odom_set({{0, 12, 0}, fwd, 127}, true);
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set(-130, TURN_SPEED);
+  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{-21.3, -11.3, 0}, fwd, 127}, true);
+
+  /*chassis.pid_odom_set({{0, 10, 0}, fwd, 90}, true);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-100, 20, -90}, fwd, 90}, true);*/
+  //chassis.pid_odom_set({{0.7, -63, 176}, rev, 90}, true);
+  
 }
