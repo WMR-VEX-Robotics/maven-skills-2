@@ -11,7 +11,7 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-7, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
+    {-7, -14, -11},     // Left Chassis Ports (negative port will reverse it!)
     {18, 19, 17},  // Right Chassis Ports (negative port will reverse it!)
 
     5,      // IMU Port
@@ -129,8 +129,8 @@ void autonomous() {
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
   //autonForwardTest();
   //redLeft();
-  //redRight();
-  blueLeft();
+  redRight();
+  //blueLeft();
   //blueRight();
   //skills();
   //skills2();
