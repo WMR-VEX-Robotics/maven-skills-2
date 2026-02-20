@@ -44,4 +44,8 @@ void blueRight();
 
 void skills();
 
+void skills2();
+
+void autotest();
+
 void dont();

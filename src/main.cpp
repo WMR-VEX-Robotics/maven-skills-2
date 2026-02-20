@@ -11,7 +11,7 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-7, -3, -11},     // Left Chassis Ports (negative port will reverse it!)
+    {-7, -4, -11},     // Left Chassis Ports (negative port will reverse it!)
     {18, 19, 17},  // Right Chassis Ports (negative port will reverse it!)
 
     5,      // IMU Port
@@ -80,6 +80,8 @@ void disabled() {
   // . . .
 }
 
+
+
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
  * Management System or the VEX Competition Switch. This is intended for
@@ -128,9 +130,11 @@ void autonomous() {
   //autonForwardTest();
   //redLeft();
   //redRight();
-  //blueLeft();
+  blueLeft();
   //blueRight();
-  skills();
+  //skills();
+  //skills2();
+  //autotest();
   //dont();
 }
 
@@ -318,12 +322,12 @@ void hopperToMid() {
 }
 
 void intakeHold() {
-  colorState = colorSortState::colorSortOff;
+  colorState = colorSortState::colorSortOn;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
-      intakeMid.move(80);
-      intakeTop.move(10);
+      intakeMid.move(127);
+      intakeTop.move(7);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
@@ -354,6 +358,8 @@ void runIntake() {
       ez::screen_print("intakeHold", 0);
   }
 }
+
+
 
 void runColorSort() {
   if (colorState == colorSortState::colorSortOff) {
@@ -423,7 +429,7 @@ void opcontrol() {
     
     // . . .
     runIntake();
-    //runColorSort();
+   // runColorSort();
     // . . .
     
 
