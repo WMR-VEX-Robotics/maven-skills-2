@@ -61,8 +61,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"TurnTest\n\nTurn to 90 then -90", autonTurnTest},
-      {"ForwardTest\n\nMove Forward 24 inches", autonForwardTest},
+      {"skillsAuton", skills2},
+      {"redLeft", redLeft},
   });
 
   // Initialize chassis and auton selector
@@ -126,14 +126,14 @@ void autonomous() {
   to be consistent
   */
 
-  //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
   //autonForwardTest();
   //redLeft();
   //redRight();
   //blueLeft();
   //blueRight();
   //skills();
-  skills2();
+  //skills2();
   //autotest();
   //dont();
 }
