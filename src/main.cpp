@@ -129,11 +129,11 @@ void autonomous() {
   //ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
   //autonForwardTest();
   //redLeft();
-  redRight();
+  //redRight();
   //blueLeft();
   //blueRight();
   //skills();
-  //skills2();
+  skills2();
   //autotest();
   //dont();
 }

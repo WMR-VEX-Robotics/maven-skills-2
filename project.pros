@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "right",
+    "project_name": "skillsa",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -426,7 +426,7 @@
     "upload_options": {
       "description": "Rright",
       "icon": "planet",
-      "slot": 3
+      "slot": 6
     },
     "use_early_access": false
   }
