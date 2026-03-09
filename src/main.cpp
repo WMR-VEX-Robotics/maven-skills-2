@@ -60,10 +60,10 @@ void initialize() {
   // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
-  ez::as::auton_selector.autons_add({
-      {"skillsAuton", skills2},
-      {"redLeft", redLeft},
-  });
+  //ez::as::auton_selector.autons_add({
+      //{"skillsAuton", skills2},
+     // {"redRight", redRight},
+  //});
 
   // Initialize chassis and auton selector
   chassis.initialize();
@@ -134,6 +134,7 @@ void autonomous() {
   //blueRight();
   //skills();
   //skills2();
+  skills3();
   //autotest();
   //dont();
 }
@@ -165,7 +166,7 @@ void ez_screen_task() {
         // If we're on the first blank page...
         if (ez::as::page_blank_is_on(0)) {
           // Display X, Y, and Theta
-          ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
+          ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get() ) +
                                "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
                                "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
                            1);  // Don't override the top Page line
@@ -235,7 +236,11 @@ enum intakeState {
   INTAKE_TO_MID,
   HOPPER_TO_TOP,
   HOPPER_TO_MID,
+  HOPPER_TO_LOW,
   INTAKE_HOLD,
+  SCORE_LOW,
+  INTAKE_TO_HOPPER,
+
 };
 
 intakeState state;
@@ -250,7 +255,7 @@ colorSortState colorState;
 
 
 void intakeToTop() {
-  colorState = colorSortState::colorSortOff;
+  //colorState = colorSortState::colorSortOff;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
@@ -268,12 +273,12 @@ void intakeToTop() {
 }
 
 void intakeToMid() {
-  colorState = colorSortState::colorSortOff;
+  //colorState = colorSortState::colorSortOff;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
-      intakeTop.move(-127);
+      intakeTop.move(-50);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
@@ -286,7 +291,7 @@ void intakeToMid() {
 }
 
 void hopperToTop() {
-  colorState = colorSortState::colorSortOff;
+  //colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-75);
@@ -304,7 +309,7 @@ void hopperToTop() {
 }
 
 void hopperToMid() {
-  colorState = colorSortState::colorSortOff;
+  //colorState = colorSortState::colorSortOff;
   hopperExit.set(true);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(-75);
@@ -321,13 +326,67 @@ void hopperToMid() {
   }
 }
 
+void hopperToLow() {
+  //colorState = colorSortState::colorSortOff;
+  //hopperExit.set(true);
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(-125);
+      intakeMid.move(75);
+      intakeTop.move(-127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
 void intakeHold() {
-  colorState = colorSortState::colorSortOn;
+  //colorState = colorSortState::colorSortOn;
   hopperExit.set(false);
   if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
       intakeBottom.move(127);
       intakeMid.move(127);
       intakeTop.move(7);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-127);
+      intakeMid.move(-127);
+      intakeTop.move(-127);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+void scoreLow(){
+  //colorState = colorSortState::colorSortOn;
+  hopperExit.set(false);
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(127);
+      intakeMid.move(127);
+      intakeTop.move(127);
+    } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      intakeBottom.move(-60);
+      intakeMid.move(-100);
+      intakeTop.move(-100);
+    } else {
+      intakeBottom.move(0);
+      intakeMid.move(0);
+      intakeTop.move(0);
+  }
+}
+
+void intakeToHopper() {
+  //colorState = colorSortState::colorSortOff;
+  hopperExit.set(false);
+  if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      intakeBottom.move(127);
+      intakeMid.move(-127);
+      intakeTop.move(127);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-127);
       intakeMid.move(-127);
@@ -353,12 +412,20 @@ void runIntake() {
   } else if (state == intakeState::HOPPER_TO_MID) {
       hopperToMid();
       ez::screen_print("hoppermid", 0);
+  } else if (state == intakeState::HOPPER_TO_LOW) {
+      hopperToLow();
+      ez::screen_print("hopperlow", 0);
   } else if (state == intakeState::INTAKE_HOLD) {
       intakeHold();
       ez::screen_print("intakeHold", 0);
+  } else if (state == intakeState::SCORE_LOW) {
+      scoreLow();
+      ez::screen_print("scoreLow", 0);
+  } else if (state == intakeState::INTAKE_TO_HOPPER) {
+      intakeToHopper();
+      ez::screen_print("intakeToHopper", 0);
   }
 }
-
 
 
 void runColorSort() {
@@ -397,31 +464,37 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
 
-    hopperExit.button_toggle(master.get_digital(DIGITAL_X));
-    hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
+    hopperExit.button_toggle(master.get_digital(DIGITAL_A));
+    //hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
     loader.button_toggle(master.get_digital(DIGITAL_B));
     descore.button_toggle(master.get_digital(DIGITAL_L1));
+   
     
 
-    if(master.get_digital(DIGITAL_UP)) {
+    if(master.get_digital(DIGITAL_L2)) {
       state = INTAKE_TO_TOP;
+    } else if(master.get_digital(DIGITAL_UP)) {
+        state = INTAKE_TO_HOPPER;
     } else if(master.get_digital(DIGITAL_RIGHT)) {
-        state = INTAKE_TO_MID;
-    } else if(master.get_digital(DIGITAL_DOWN)) {
         state = HOPPER_TO_MID;
     } else if(master.get_digital(DIGITAL_LEFT)) {
+        state = HOPPER_TO_LOW;
+    } else if(master.get_digital(DIGITAL_DOWN)) {
         state = HOPPER_TO_TOP;
-    } else if (master.get_digital(DIGITAL_L2)) {
+    } else if (master.get_digital(DIGITAL_X)) {
+      //loader.set(true);
       state = INTAKE_HOLD;
+    } else if (master.get_digital(DIGITAL_Y)) {
+      state = SCORE_LOW;
     }
 
-    if(master.get_digital_new_press(DIGITAL_Y)) {
-      if(colorState == colorSortState::colorSortOff) {
-        colorState = colorSortState::colorSortOn;
-      } else {
-        colorState = colorSortState::colorSortOff;
-      }
-    }
+    //if(master.get_digital_new_press(DIGITAL_Y)) {
+      //if(colorState == colorSortState::colorSortOff) {
+        //colorState = colorSortState::colorSortOn;
+      //} else {
+        //colorState = colorSortState::colorSortOff;
+     // }
+   // }
 
     
     

@@ -46,6 +46,8 @@ void skills();
 
 void skills2();
 
+void skills3();
+
 void autotest();
 
 void dont();
