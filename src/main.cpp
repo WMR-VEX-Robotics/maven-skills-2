@@ -389,7 +389,7 @@ void intakeToHopper() {
       intakeTop.move(127);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
       intakeBottom.move(-60);
-      intakeMid.move(100);
+      intakeMid.move(60);
       intakeTop.move(-127);
     } else {
       intakeBottom.move(0);
@@ -464,7 +464,7 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
 
-    //hopperExit.button_toggle(master.get_digital(DIGITAL_A));
+    hopperExit.button_toggle(master.get_digital(DIGITAL_A));
     //hopperEnterance.button_toggle(master.get_digital(DIGITAL_A));
     loader.button_toggle(master.get_digital(DIGITAL_B));
     descore.button_toggle(master.get_digital(DIGITAL_Y));
@@ -475,10 +475,10 @@ void opcontrol() {
       state = INTAKE_TO_TOP;
     } else if(master.get_digital(DIGITAL_UP)) {
         state = INTAKE_TO_HOPPER;
-    } else if(master.get_digital(DIGITAL_RIGHT)) {
-        state = HOPPER_TO_MID;
-    } else if(master.get_digital(DIGITAL_A)) {
-        state = INTAKE_TO_MID;
+    //} else if(master.get_digital(DIGITAL_RIGHT)) {
+        //state = HOPPER_TO_MID;
+    //} else if(master.get_digital(DIGITAL_A)) {
+        //state = INTAKE_TO_MID;
     } else if(master.get_digital(DIGITAL_DOWN)) {
         state = HOPPER_TO_TOP;
     } else if (master.get_digital(DIGITAL_L1)) {
